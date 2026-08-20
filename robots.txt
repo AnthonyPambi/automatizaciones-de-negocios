@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anthonypambi.github.io/automatizaciones-de-negocios/sitemap.xml
