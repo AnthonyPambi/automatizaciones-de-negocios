@@ -24,6 +24,39 @@
     el.textContent = String(new Date().getFullYear());
   });
 
+  // ---------- Scroll reveal ----------
+  var revealEls = document.querySelectorAll([
+    ".flow-head", ".flow-card", ".demo-copy", ".chat-card", ".section-head",
+    ".service-card", ".quote-banner", ".nosotros-intro > div:first-child",
+    ".diff-card", ".proceso-head", ".proceso-card", ".contacto-head",
+    ".form-card", ".info-card", ".app-card", ".role-card"
+  ].join(","));
+
+  if (revealEls.length) {
+    Array.prototype.forEach.call(revealEls, function (el) {
+      el.classList.add("reveal");
+    });
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var parent = el.parentElement;
+          if (parent.revealCount === undefined) parent.revealCount = 0;
+          el.style.transitionDelay = (Math.min(parent.revealCount, 5) * 80) + "ms";
+          parent.revealCount += 1;
+          el.classList.add("is-visible");
+          obs.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+
+      Array.prototype.forEach.call(revealEls, function (el) { io.observe(el); });
+    } else {
+      Array.prototype.forEach.call(revealEls, function (el) { el.classList.add("is-visible"); });
+    }
+  }
+
   // ---------- Demo chat (solo Inicio) ----------
   var chatBody = document.getElementById("chatBody");
   var typingRow = document.getElementById("typingRow");
